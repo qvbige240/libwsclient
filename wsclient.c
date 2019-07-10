@@ -40,6 +40,8 @@ void *libwsclient_run_thread(void *ptr) {
 	int sockfd;
 	char buf[1024];
 	int n, i;
+
+    printf(" libwsclient_run_thread start\n");
 	do {
 		memset(buf, 0, 1024);
 		n = _libwsclient_read(c, buf, 1023);
@@ -48,6 +50,7 @@ void *libwsclient_run_thread(void *ptr) {
 
 	} while(n > 0);
 
+    printf(" libwsclient_run_thread end\n");
 	if(n < 0) {
 		if(c->onerror) {
 			err = libwsclient_new_error(WS_RUN_THREAD_RECV_ERR);
@@ -69,11 +72,11 @@ void *libwsclient_run_thread(void *ptr) {
 
 void libwsclient_finish(wsclient *client) {
 	//TODO: handle UNIX socket helper thread shutdown better than killing it...  :P
-	if(client->helper_thread) {
-		pthread_kill(client->helper_thread, SIGINT);
-	}
 	if(client->run_thread) {
 		pthread_join(client->run_thread, NULL);
+	}
+	if(client->helper_thread) {
+		pthread_kill(client->helper_thread, SIGINT);
 	}
 
 }

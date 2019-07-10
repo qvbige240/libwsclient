@@ -22,6 +22,9 @@ test
 .*.swp
 .libs
 .deps
+tags
+install/
+
 
 *.html
 /autom4te.cache
