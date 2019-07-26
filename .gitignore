@@ -12,6 +12,7 @@ Makefile
 /install-sh
 /missing
 test
+test_*
 *~
 .*~
 .cproject
