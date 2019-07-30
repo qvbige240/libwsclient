@@ -1,4 +1,5 @@
 # http://www.gnu.org/software/automake
+config.*
 config.h.in
 Makefile.in
 Makefile

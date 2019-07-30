@@ -32,7 +32,18 @@ int onopen(wsclient *c) {
 
 int main(int argc, char **argv) {
 	//Initialize new wsclient * using specified URI
-	wsclient *client = libwsclient_new("ws://echo.websocket.org");
+    char *uri = NULL;
+    if (argc > 1) {
+		uri = argv[1];
+    } else {
+		uri = "ws://echo.websocket.org";
+        printf("args with specified uri null, using default: ws://echo.websocket.org \n");
+		//fprintf(stderr, "Unable to initialize new WS client, with url null.\n");
+        //exit(1);
+    }
+	//wsclient *client = libwsclient_new("ws://echo.websocket.org");
+	//wsclient *client = libwsclient_new("ws://localhost:9002");
+	wsclient *client = libwsclient_new(uri);
 	if(!client) {
 		fprintf(stderr, "Unable to initialize new WS client.\n");
 		exit(1);
