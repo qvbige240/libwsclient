@@ -36,21 +36,34 @@ int jt1078_package(char *buffer, const char *data, unsigned short len)
 	p[i++] = 0x31;
 	p[i++] = 0x63;
 	p[i++] = 0x64;
-
+/*
 	p[8] = 0x01;
 	p[9] = 0x36;
 	p[10] = 0x84;
 	p[11] = 0x09;
 	p[12] = 0x11;
 	p[13] = 0x97;
+*/
+p[8] = 0x05;
+p[9] = 0x50;
+p[10] = 0x12;
+p[11] = 0x34;
+p[12] = 0x56;
+p[13] = 0x78;
+
 
 	p[15] = 0x30;
-	p[28] = (len >> 8) & 0xff;
-	p[29] = len & 0xff;
+	//p[28] = (len >> 8) & 0xff;
+	//p[29] = len & 0xff;
+	//memcpy(p+30, data, len);
 
-	memcpy(p+30, data, len);
+	//return len+30;
+	p[24] = (len >> 8) & 0xff;
+	p[25] = len & 0xff;
 
-	return len+30;
+	memcpy(p+26, data, len);
+
+	return len+26;
 }
 
 
@@ -257,8 +270,11 @@ static char pcm_data[9632] = {0};
 int onmessage(wsclient *c, wsclient_message *msg) {
 	fprintf(stderr, "onmessage: (%llu): %s\n", msg->payload_len, msg->payload);
 
-	char *data_buf = msg->payload + 30;
-	int data_size = msg->payload_len - 30;
+	//char *data_buf = msg->payload + 30;
+	//int data_size = msg->payload_len - 30;
+
+	char *data_buf = msg->payload + 26;
+	int data_size = msg->payload_len - 26;
 
 	alaw_to_pcm16(data_size, data_buf, pcm_data);
 	//alsa_pcm_play_8000_1(msg->payload+30);
