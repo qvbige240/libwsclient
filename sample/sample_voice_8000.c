@@ -73,8 +73,11 @@ static unsigned int rate = 8000;
 static unsigned int format = SND_PCM_FORMAT_S16_LE;
 static unsigned int channel = 1;
 
-unsigned int buffer_time = 300000;
-unsigned int period_time = 100000;
+//unsigned int buffer_time = 300000;
+//unsigned int period_time = 100000;
+unsigned int buffer_time = 60000;
+unsigned int period_time = 20000;
+snd_pcm_sframes_t buffer_size;
 snd_pcm_sframes_t buffer_size;
 snd_pcm_sframes_t period_size;
 
@@ -241,7 +244,12 @@ static int alsa_pcm_play_8000_1(char *buffer, int len)
 {
 	int ret;
 
+    int length = period_size;
+    if (len < period_size)
+        length = len;
+
 	while((ret=snd_pcm_writei(playback_handle, buffer, period_size)) < 0)
+	//while((ret=snd_pcm_writei(playback_handle, buffer, length)) < 0)
 	//while((ret=alsa_pcm_write(buffer)) < 0)
 	{
 		printf("writei failed ret = %d, playback_handle = %p\n", ret, playback_handle);
